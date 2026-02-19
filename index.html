@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>麻将训练器 - Mahjong Trainer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>🀄 麻将训练器</h1>
+      <p class="subtitle">Mahjong Trainer</p>
+    </header>
+
+    <section class="controls">
+      <h2>手牌设置</h2>
+
+      <div class="control-group">
+        <label>花色 (Suits) — 点击切换</label>
+        <div class="button-group multi" id="suit-selection">
+          <button class="btn-option suit-btn active" data-suit="wan">万 <span class="suit-label">Characters</span></button>
+          <button class="btn-option suit-btn active" data-suit="tiao">条 <span class="suit-label">Bamboo</span></button>
+          <button class="btn-option suit-btn" data-suit="bing">饼 <span class="suit-label">Dots</span></button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>字牌 (Honor Tiles)</label>
+        <div class="toggle-row">
+          <div class="toggle-item">
+            <span>风牌 (Winds)</span>
+            <button class="btn-toggle active" id="toggle-winds" data-enabled="true">
+              <span class="toggle-label">东南西北</span>
+            </button>
+          </div>
+          <div class="toggle-item">
+            <span>箭牌 (Dragons)</span>
+            <button class="btn-toggle active" id="toggle-dragons" data-enabled="true">
+              <span class="toggle-label">中发白</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>主花色最少张数 (Min Tiles from One Suit)</label>
+        <p class="control-hint">适合训练清一色、混一色听牌</p>
+        <div class="min-suit-row">
+          <div class="min-suit-select">
+            <label class="mini-label">花色</label>
+            <div class="button-group" id="dominant-suit">
+              <button class="btn-option suit-chip active" data-value="auto">自动</button>
+              <button class="btn-option suit-chip" data-value="wan">万</button>
+              <button class="btn-option suit-chip" data-value="tiao">条</button>
+              <button class="btn-option suit-chip" data-value="bing">饼</button>
+            </div>
+          </div>
+          <div class="min-suit-slider">
+            <label class="mini-label">最少 <strong id="min-suit-value">0</strong> 张</label>
+            <input type="range" id="min-suit-range" min="0" max="14" value="0" class="slider">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-generate" id="generate-btn">
+        🎲 生成随机手牌
+        <span class="btn-sub">Generate Random Hand</span>
+      </button>
+    </section>
+
+    <section class="hand-display" id="hand-display">
+      <div class="hand-placeholder">
+        <p>点击上方按钮生成手牌</p>
+        <p class="placeholder-sub">Click the button above to generate a hand</p>
+      </div>
+    </section>
+
+    <section class="hand-info" id="hand-info" style="display:none;">
+      <div class="info-chips" id="info-chips"></div>
+    </section>
+
+    <section class="hint-banner" id="hint-banner" style="display:none;">
+      <div class="hint-toggle">
+        <button class="btn-hint" id="hint-btn">
+          💡 显示最佳打牌建议
+          <span class="btn-sub">Show Best Discard Hint</span>
+        </button>
+      </div>
+      <div class="hint-content" id="hint-content" style="display:none;">
+        <div class="hint-header">
+          <span class="hint-icon">⭐</span>
+          <span class="hint-title">最佳打牌建议</span>
+        </div>
+        <div class="hint-cards" id="hint-cards"></div>
+        <div class="hint-explanation" id="hint-explanation"></div>
+      </div>
+    </section>
+
+    <section class="analysis-panel" id="analysis-panel" style="display:none;">
+      <div class="analysis-header">
+        <h3>📊 打牌分析</h3>
+        <p class="analysis-sub">点击一张牌查看打出后的分析 — Click a tile to analyze</p>
+      </div>
+
+      <div class="analysis-section shanten-section">
+        <div class="shanten-display">
+          <span class="shanten-label">向听数</span>
+          <span class="shanten-value" id="shanten-value">--</span>
+          <span class="shanten-desc" id="shanten-desc"></span>
+        </div>
+      </div>
+
+      <div class="analysis-section" id="path-section" style="display:none;">
+        <h4>💡 示例路径 — 如何到达听牌</h4>
+        <div id="path-list"></div>
+      </div>
+
+      <div class="analysis-section">
+        <h4>有效进张 <span class="effective-summary" id="effective-summary"></span></h4>
+        <div class="effective-tiles" id="effective-tiles"></div>
+      </div>
+
+      <div class="analysis-section">
+        <h4>手牌组合</h4>
+        <div class="combo-list" id="combo-list"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

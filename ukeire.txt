@@ -1,0 +1,98 @@
+Assume:
+
+* Closed hand
+* Ignore scoring/yaku
+* Ignore tile visibility (assume 4 of each tile exist)
+* Only standard hand structure (4 melds + 1 pair)
+* A correct `compute_shanten(hand)` function already exists
+
+Your job is to compute which tiles improve the hand.
+
+---
+
+### Step 1 — Compute the current shanten
+
+Given a hand `H`:
+
+```
+current_shanten = compute_shanten(H)
+```
+
+---
+
+### Step 2 — Enumerate all tile types
+
+Define the full Mahjong tile set:
+
+* 1–9m, 1–9p, 1–9s
+* honors optional depending on rules
+
+Iterate over each **tile type** `t`.
+
+Do NOT iterate per physical tile — only per type.
+
+---
+
+### Step 3 — Simulate drawing the tile
+
+For each tile type `t`:
+
+```
+H2 = H + t
+new_shanten = compute_shanten(H2)
+```
+
+---
+
+### Step 4 — Check if tile is effective
+
+A tile is **effective** if:
+
+```
+new_shanten < current_shanten
+```
+
+If true:
+
+* add `t` to the effective tile list
+
+---
+
+### Step 5 — Count tiles
+
+Since we assume full availability:
+
+```
+each tile type contributes 4 tiles
+```
+
+Return:
+
+```
+effective_tile_types = list of tiles
+ukeire_types = len(list)
+ukeire_count = ukeire_types * 4
+```
+
+---
+
+### Step 6 — Return structured result
+
+Return something like:
+
+```
+{
+    "tiles": [...],
+    "type_count": N,
+    "tile_count": N * 4
+}
+```
+
+---
+
+### Important notes for correctness
+
+* Always use the **minimal shanten** decomposition
+* Do NOT rely on shape heuristics here
+* This function must be purely mechanical
+* If two implementations differ, one is wrong
