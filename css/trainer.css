@@ -1,0 +1,439 @@
+/* ===== Controls Section ===== */
+.controls {
+  background: #1a2733;
+  border-radius: 16px;
+  padding: 28px;
+  margin-top: 24px;
+  border: 1px solid #2a3a4a;
+}
+
+.controls h2 {
+  font-size: 1.1rem;
+  color: #8ab4d6;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.control-group {
+  margin-bottom: 20px;
+}
+
+.control-group > label {
+  display: block;
+  font-size: 0.85rem;
+  color: #9aabb8;
+  margin-bottom: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Hand Display ===== */
+.hand-display {
+  margin-top: 28px;
+  min-height: 120px;
+}
+
+.hand-placeholder {
+  text-align: center;
+  padding: 40px 20px;
+  color: #556677;
+}
+
+.placeholder-sub {
+  font-size: 0.8rem;
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+.tiles-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+/* ===== Analysis Panel ===== */
+.analysis-panel {
+  background: #1a2733;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+  border: 1px solid #2a3a4a;
+}
+
+.analysis-header h3 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.analysis-sub {
+  font-size: 0.75rem;
+  color: #5a7a8a;
+  margin-bottom: 16px;
+}
+
+.analysis-section {
+  margin-bottom: 20px;
+}
+
+.analysis-section:last-child {
+  margin-bottom: 0;
+}
+
+.analysis-section h4 {
+  font-size: 0.85rem;
+  color: #9aabb8;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.effective-summary {
+  color: #2ecc71;
+  font-weight: 600;
+}
+
+/* Shanten display */
+.shanten-section {
+  text-align: center;
+  padding: 12px 0;
+}
+
+.shanten-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.shanten-label {
+  font-size: 0.9rem;
+  color: #7a9aaa;
+}
+
+.shanten-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #e0e0e0;
+  line-height: 1;
+  min-width: 50px;
+  text-align: center;
+}
+
+.shanten-value.tenpai {
+  color: #2ecc71;
+  text-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+}
+
+.shanten-desc {
+  font-size: 0.85rem;
+  color: #7a9aaa;
+}
+
+/* Effective tiles grid */
+.effective-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.no-effective {
+  color: #556677;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+/* Combo groups */
+.combo-group {
+  margin-bottom: 14px;
+}
+
+.combo-group:last-child {
+  margin-bottom: 0;
+}
+
+.combo-group-header {
+  font-size: 0.8rem;
+  color: #7a9aaa;
+  margin-bottom: 6px;
+}
+
+.combo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.combo-chip {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.combo-shunzi {
+  background: #1a3a4a;
+  color: #5bc0de;
+  border: 1px solid #2a5a6a;
+}
+
+.combo-kezi {
+  background: #3a2a1a;
+  color: #e8a838;
+  border: 1px solid #5a4a2a;
+}
+
+.combo-dazi {
+  background: #2a2a3a;
+  color: #a88ad6;
+  border: 1px solid #3a3a5a;
+}
+
+.combo-duizi {
+  background: #1a3a2a;
+  color: #68c88a;
+  border: 1px solid #2a5a3a;
+}
+
+/* ===== Example Paths ===== */
+.path-item {
+  background: #0f1923;
+  border: 1px solid #2a3a4a;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+}
+
+.path-item:last-child {
+  margin-bottom: 0;
+}
+
+.path-header {
+  font-size: 0.75rem;
+  color: #5a7a8a;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.path-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.path-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.path-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.path-draw {
+  background: #1a3a4a;
+  color: #5bc0de;
+}
+
+.path-discard {
+  background: #3a2020;
+  color: #e07070;
+}
+
+.path-win {
+  background: #1a4a2a;
+  color: #2ecc71;
+  font-size: 0.85rem;
+  margin-right: 6px;
+}
+
+.path-arrow {
+  color: #5a6a7a;
+  font-size: 0.85rem;
+  margin: 0 2px;
+}
+
+/* ===== Best Discard Hint ===== */
+.hint-banner {
+  margin-top: 16px;
+}
+
+.btn-hint {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-hint:hover {
+  background: linear-gradient(135deg, #e67e22, #d35400);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(243, 156, 18, 0.3);
+}
+
+.btn-hint .btn-sub {
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.hint-content {
+  background: #1a2733;
+  border: 2px solid #f39c12;
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.hint-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.hint-icon {
+  font-size: 1.2rem;
+}
+
+.hint-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f39c12;
+}
+
+.hint-cards {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.hint-explanation {
+  font-size: 0.85rem;
+  color: #c0d0e0;
+  line-height: 1.8;
+}
+
+.hint-explanation strong {
+  color: #2ecc71;
+}
+
+.hint-compare {
+  color: #7a8a9a;
+  font-size: 0.8rem;
+}
+
+/* Ranking table */
+.hint-ranking {
+  margin-top: 12px;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.ranking-table th {
+  background: #0f1923;
+  color: #7a9aaa;
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid #2a3a4a;
+  font-weight: 500;
+}
+
+.ranking-table td {
+  padding: 5px 10px;
+  border-bottom: 1px solid #1a2a3a;
+  color: #b0c0d0;
+}
+
+.ranking-table tr.rank-best td {
+  color: #f39c12;
+  font-weight: 600;
+  background: rgba(243, 156, 18, 0.08);
+}
+
+.ranking-table tbody tr:hover td {
+  background: rgba(255,255,255,0.03);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .tile {
+    width: 42px;
+    height: 60px;
+  }
+
+  .tile-char {
+    font-size: 1.2rem;
+  }
+
+  .tile-sub {
+    font-size: 0.5rem;
+  }
+
+  .tile.mini {
+    width: 30px;
+    height: 42px;
+  }
+
+  .tile.mini .tile-char {
+    font-size: 0.8rem;
+  }
+
+  header h1 {
+    font-size: 1.6rem;
+  }
+
+  .controls {
+    padding: 18px;
+  }
+
+  .btn-generate {
+    font-size: 1rem;
+    padding: 14px;
+  }
+
+  .analysis-panel {
+    padding: 16px;
+  }
+
+  .shanten-value {
+    font-size: 2rem;
+  }
+
+  .mode-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mode-card {
+    width: 100%;
+    max-width: 300px;
+    padding: 28px 24px 22px;
+  }
+
+  .btn-back {
+    position: static;
+    transform: none;
+    margin-bottom: 10px;
+  }
+}

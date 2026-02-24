@@ -1,0 +1,113 @@
+/* ===== Back Button ===== */
+.btn-back {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #243442;
+  border: 1px solid #3a4f5f;
+  color: #8ab4d6;
+  padding: 6px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.btn-back:hover {
+  background: #2d4152;
+  border-color: #5a7a8f;
+  color: #fff;
+}
+
+/* ===== Mode Selection ===== */
+.mode-select {
+  margin-top: 48px;
+  text-align: center;
+}
+
+.mode-select-title {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 32px;
+  font-weight: 600;
+}
+
+.mode-select-sub {
+  display: block;
+  font-size: 0.85rem;
+  color: #7a8a99;
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.mode-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.mode-card {
+  background: #1a2733;
+  border: 2px solid #2a3a4a;
+  border-radius: 20px;
+  padding: 36px 32px 28px;
+  width: 260px;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  text-align: center;
+}
+
+.mode-card:not(:disabled):hover {
+  border-color: #2ecc71;
+  background: #1e2f3d;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(46, 204, 113, 0.15);
+}
+
+.mode-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mode-icon {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.mode-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.mode-desc {
+  font-size: 0.85rem;
+  color: #7a8a99;
+}
+
+.mode-badge {
+  font-size: 0.7rem;
+  padding: 3px 12px;
+  border-radius: 12px;
+  background: #3a2a1a;
+  color: #a08060;
+  border: 1px solid #5a4a2a;
+  margin-top: 4px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.mode-badge-ready {
+  background: #1a4a3a;
+  color: #2ecc71;
+  border-color: #2a6a4a;
+}
