@@ -3,11 +3,30 @@
 
 // ===== Mode Selection =====
 
+let gameUI = null;
+
 function enterMode(mode) {
   document.getElementById('mode-select').style.display = 'none';
   document.getElementById('btn-back').style.display = '';
   if (mode === 'tenpai') {
     document.getElementById('tenpai-trainer').style.display = '';
+  } else if (mode === 'game') {
+    const container = document.getElementById('mahjong-game');
+    container.style.display = '';
+    if (gameUI) gameUI.destroy();
+    gameUI = new GameUI(container);
+    gameUI.showRuleSelect();
+  } else if (mode === 'simulation') {
+    const container = document.getElementById('mahjong-game');
+    container.style.display = '';
+    if (gameUI) gameUI.destroy();
+    gameUI = new GameUI(container, {
+      simulationMode: true,
+      autoRestart: true,
+      hintEnabled: false,
+      aiLevels: [1, 1, 2, 3], // 2 weak, 1 medium, 1 strong
+    });
+    gameUI.startSimulation();
   }
 }
 
@@ -15,6 +34,9 @@ function showModeSelect() {
   document.getElementById('mode-select').style.display = '';
   document.getElementById('btn-back').style.display = 'none';
   document.getElementById('tenpai-trainer').style.display = 'none';
+  const gameContainer = document.getElementById('mahjong-game');
+  gameContainer.style.display = 'none';
+  if (gameUI) { gameUI.destroy(); gameUI = null; }
 }
 
 // ===== State =====

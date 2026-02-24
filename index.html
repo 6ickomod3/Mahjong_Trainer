@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/tiles.css">
   <link rel="stylesheet" href="css/modes.css">
   <link rel="stylesheet" href="css/trainer.css">
+  <link rel="stylesheet" href="css/game.css?v=12">
 </head>
 <body>
   <div class="app">
@@ -22,11 +23,17 @@
     <section class="mode-select" id="mode-select">
       <h2 class="mode-select-title">选择模式 <span class="mode-select-sub">Choose Mode</span></h2>
       <div class="mode-cards">
-        <button class="mode-card" id="mode-normal" disabled>
+        <button class="mode-card" id="mode-normal" onclick="enterMode('game')">
           <span class="mode-icon">🀄</span>
           <span class="mode-name">普通麻将</span>
           <span class="mode-desc">Normal Mahjong</span>
-          <span class="mode-badge">即将推出 Coming Soon</span>
+          <span class="mode-badge mode-badge-ready">可用 Ready</span>
+        </button>
+        <button class="mode-card" id="mode-sim" onclick="enterMode('simulation')">
+          <span class="mode-icon">🤖</span>
+          <span class="mode-name">AI 对战模拟</span>
+          <span class="mode-desc">AI Simulation</span>
+          <span class="mode-badge mode-badge-ready">可用 Ready</span>
         </button>
         <button class="mode-card" id="mode-tenpai" onclick="enterMode('tenpai')">
           <span class="mode-icon">🎯</span>
@@ -153,13 +160,20 @@
       </div>
     </section>
     </div><!-- end tenpai-trainer -->
+
+    <!-- Normal Mahjong Game Mode -->
+    <div id="mahjong-game" style="display:none;"></div>
   </div>
 
-  <script src="js/tiles.js"></script>
-  <script src="js/shanten.js"></script>
-  <script src="js/hand.js"></script>
-  <script src="js/analysis.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/tiles.js?v=12"></script>
+  <script src="js/shanten.js?v=12"></script>
+  <script src="js/hand.js?v=12"></script>
+  <script src="js/analysis.js?v=12"></script>
+  <script src="js/ui.js?v=12"></script>
+  <script src="js/mahjong.js?v=12"></script>
+  <script src="js/greedyAI.js?v=12"></script>
+  <script src="js/gameController.js?v=12"></script>
+  <script src="js/game-ui.js?v=12"></script>
+  <script src="js/app.js?v=12"></script>
 </body>
 </html>

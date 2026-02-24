@@ -46,10 +46,10 @@ const SUITS = {
 };
 
 const WINDS = [
-  { id: 'feng_dong', char: '東', sub: '风', name: '东风' },
-  { id: 'feng_nan',  char: '南', sub: '风', name: '南风' },
-  { id: 'feng_xi',   char: '西', sub: '风', name: '西风' },
-  { id: 'feng_bei',  char: '北', sub: '风', name: '北风' },
+  { id: 'feng_dong', char: '東', sub: '', name: '东风' },
+  { id: 'feng_nan',  char: '南', sub: '', name: '南风' },
+  { id: 'feng_xi',   char: '西', sub: '', name: '西风' },
+  { id: 'feng_bei',  char: '北', sub: '', name: '北风' },
 ];
 
 const DRAGONS = [
@@ -84,10 +84,10 @@ function indexToDisplay(idx) {
   if (idx < 18) return { char: NUM_CHARS[idx-9], sub: '条', suit: 'tiao', type: 'suit' };
   if (idx < 27) return { char: NUM_CHARS[idx-18],sub: '饼', suit: 'bing', type: 'suit' };
   const honors = [
-    { char: '東', sub: '风', suit: 'feng',    type: 'wind' },
-    { char: '南', sub: '风', suit: 'feng',    type: 'wind' },
-    { char: '西', sub: '风', suit: 'feng',    type: 'wind' },
-    { char: '北', sub: '风', suit: 'feng',    type: 'wind' },
+    { char: '東', sub: '', suit: 'feng',    type: 'wind' },
+    { char: '南', sub: '', suit: 'feng',    type: 'wind' },
+    { char: '西', sub: '', suit: 'feng',    type: 'wind' },
+    { char: '北', sub: '', suit: 'feng',    type: 'wind' },
     { char: '中', sub: '',   suit: 'jian',    type: 'dragon' },
     { char: '發', sub: '',   suit: 'jian-fa', type: 'dragon' },
     { char: '白', sub: '',   suit: 'jian-bai',type: 'dragon' },
