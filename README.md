@@ -26,6 +26,11 @@ A browser-based mahjong training tool for improving hand reading, tile efficienc
 - **Speed controls** — 1×, 2×, 4× playback speed
 - **Auto-restart** — games restart automatically after each round
 
+### 📊 Session Scoreboard
+- **Aggregated scores** — cumulative totals displayed at the top
+- **Per-round history** — each round shows score deltas (not cumulative)
+- **点炮 details** — round log shows who dealt into whom (e.g., "AI 南 点炮 → AI 東 8花")
+
 ### 🧠 Greedy AI Engine
 - **Three-tier discard funnel** — min shanten → max ukeire → max 2nd-order expected ukeire → safety tie-breaker
 - **Full EV shootout for calls** — pong/chi decisions evaluated by simulating the post-call state and running the full discard engine, compared against pass EV

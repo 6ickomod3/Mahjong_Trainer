@@ -3,17 +3,79 @@
 
 // ===== Effective Tiles =====
 
+// ===== 修复后的有效进张计算 =====
+
+// 必须传入真实手牌数组，用于扣除已拥有的牌
 function findEffectiveTiles(handArr, currentShanten) {
   const results = [];
+  let totalRealUkeire = 0; // 记录真实的剩余进张总数
+
   for (let i = 0; i < 34; i++) {
     if (handArr[i] >= 4) continue;
+    
     handArr[i]++;
     const sh = calculateShanten(handArr);
     if (sh < currentShanten) {
-      results.push({ index: i });
+      // 物理现实约束：最多4张，减去自己手里已经有的
+      const remainingCount = 4 - (handArr[i] - 1); 
+      
+      if (remainingCount > 0) {
+        results.push({ index: i, count: remainingCount });
+        totalRealUkeire += remainingCount;
+      }
     }
     handArr[i]--;
   }
+  return { types: results, totalCount: totalRealUkeire };
+}
+
+
+// ===== 修复后的弃牌分析 =====
+
+function analyzeAllDiscards(hand) {
+  const results = [];
+  const fullHandArr = handToArray(hand); // 完整的手牌数组，用于比对
+
+  for (let i = 0; i < hand.length; i++) {
+    // 处理重复牌去重逻辑（保持原有逻辑）
+    const isDupe = hand.findIndex((t, j) => j < i && t.id === hand[i].id) >= 0;
+    if (isDupe) {
+      const firstIdx = hand.findIndex(t => t.id === hand[i].id);
+      const prev = results.find(r => r.handIndices.includes(firstIdx));
+      if (prev) {
+        prev.handIndices.push(i);
+        continue;
+      }
+    }
+
+    const remaining = hand.filter((_, j) => j !== i);
+    const handArr = handToArray(remaining);
+    const sh = calculateShanten(handArr);
+    
+    // 调用修复后的进张计算器，传入剩余的13张牌
+    const { types, totalCount } = findEffectiveTiles(handArr, sh);
+
+    // 严厉建议：废弃 evaluateShape，但在它被移除前，暂且保留接口兼容
+    const shape = evaluateShape(handArr); 
+
+    results.push({
+      handIndices: [i],
+      tile: hand[i],
+      shanten: sh,
+      effectiveTypes: types.length,
+      totalUkeire: totalCount, // 现在这是真实的张数，不再是无脑乘 4
+      shapeScore: shape,
+    });
+  }
+
+  // 排序逻辑：优先向听数小，其次真实进张数多
+  results.sort((a, b) => {
+    if (a.shanten !== b.shanten) return a.shanten - b.shanten;
+    if (a.totalUkeire !== b.totalUkeire) return b.totalUkeire - a.totalUkeire;
+    // 当向听数和真实进张数完全一样时，才用这种人类玄学打分来兜底平局
+    return b.shapeScore - a.shapeScore; 
+  });
+
   return results;
 }
 
@@ -128,48 +190,6 @@ function evaluateShape(handArr) {
   }
 
   return score;
-}
-
-// ===== Best Discard Analysis =====
-
-function analyzeAllDiscards(hand) {
-  const results = [];
-
-  for (let i = 0; i < hand.length; i++) {
-    const isDupe = hand.findIndex((t, j) => j < i && t.id === hand[i].id) >= 0;
-    if (isDupe) {
-      const firstIdx = hand.findIndex(t => t.id === hand[i].id);
-      const prev = results.find(r => r.handIndices.includes(firstIdx));
-      if (prev) {
-        prev.handIndices.push(i);
-        continue;
-      }
-    }
-
-    const remaining = hand.filter((_, j) => j !== i);
-    const handArr = handToArray(remaining);
-    const sh = calculateShanten(handArr);
-    const effective = findEffectiveTiles(handArr, sh);
-    const totalUkeire = effective.length * 4;
-    const shape = evaluateShape(handArr);
-
-    results.push({
-      handIndices: [i],
-      tile: hand[i],
-      shanten: sh,
-      effectiveTypes: effective.length,
-      totalUkeire: totalUkeire,
-      shapeScore: shape,
-    });
-  }
-
-  results.sort((a, b) => {
-    if (a.shanten !== b.shanten) return a.shanten - b.shanten;
-    if (a.totalUkeire !== b.totalUkeire) return b.totalUkeire - a.totalUkeire;
-    return b.shapeScore - a.shapeScore;
-  });
-
-  return results;
 }
 
 function findBestDiscards(hand) {

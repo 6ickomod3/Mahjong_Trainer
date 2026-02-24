@@ -837,10 +837,12 @@ class GameUI {
 
   // ===== Session Tracking =====
   _recordRound() {
-    // Snapshot scores from game (which already applied payments in execWin)
+    // Compute per-round deltas before updating session totals
+    const prevScores = [...this.sessionScores];
     for (let i = 0; i < 4; i++) {
       this.sessionScores[i] = this.game.players[i].score;
     }
+    const roundDeltas = this.sessionScores.map((s, i) => s - prevScores[i]);
 
     const entry = { round: this.roundNumber };
     if (this.game.winner !== null) {
@@ -850,12 +852,14 @@ class GameUI {
       entry.winType = this.game.winType;
       entry.points = this.game.winScore ? this.game.winScore.finalPoints : 0;
       if (this.game.loser !== null && this.game.loser !== undefined) {
+        entry.loser = this.game.loser;
         entry.loserName = this.game.players[this.game.loser].name;
       }
     } else {
       entry.draw = true;
     }
-    entry.scores = [...this.sessionScores];
+    entry.scores = [...this.sessionScores];     // cumulative
+    entry.deltas = roundDeltas;                 // per-round
     this.roundHistory.push(entry);
     this._renderScoreboard();
   }
@@ -890,16 +894,20 @@ class GameUI {
     const tbody = document.createElement('tbody');
     for (const r of this.roundHistory) {
       const tr = document.createElement('tr');
+      // Use per-round deltas instead of cumulative scores
+      const deltas = r.deltas || [0, 0, 0, 0];
       let cells = `<td>${r.round}</td>`;
       for (let i = 0; i < 4; i++) {
-        const s = r.scores[i];
-        cells += `<td class="${s > 0 ? 'positive' : s < 0 ? 'negative' : ''}">${s > 0 ? '+' : ''}${s}</td>`;
+        const d = deltas[i];
+        cells += `<td class="${d > 0 ? 'positive' : d < 0 ? 'negative' : ''}">${d > 0 ? '+' : ''}${d}</td>`;
       }
       if (r.draw) {
-        cells += '<td>流局</td>';
+        cells += '<td>流局 Draw</td>';
+      } else if (r.winType === 'zimo') {
+        cells += `<td>${r.winnerName} 自摸 ${r.points}花</td>`;
       } else {
-        const typeStr = r.winType === 'zimo' ? '自摸' : '点炮';
-        cells += `<td>${r.winnerName} ${typeStr} ${r.points}花</td>`;
+        // 点炮: show who dealt into who
+        cells += `<td>${r.loserName || '?'} 点炮 → ${r.winnerName} ${r.points}花</td>`;
       }
       tr.innerHTML = cells;
       tbody.appendChild(tr);

@@ -46,9 +46,8 @@ function handToArr34(hand) {
 }
 
 function calculateShantenWithMelds(handArr, meldsCount) {
-  const base = calculateShanten(handArr);
-  const adjusted = base - 2 * (meldsCount || 0);
-  return adjusted < -1 ? -1 : adjusted;
+  // 直接透传给重构后的底层引擎
+  return calculateShanten(handArr, meldsCount || 0);
 }
 
 /** First-order ukeire for arr34 (returns {total, tiles:[{idx,count}]}) */
@@ -137,20 +136,45 @@ function getBestDiscard(game, playerIdx) {
   const tier2Indices = new Set(pool.map(r => r.tileIdx));
 
   for (const r of results) {
-    if (!tier2Indices.has(r.tileIdx)) continue;      // only compute for tier-1 ties
+    if (!tier2Indices.has(r.tileIdx)) continue; // only compute for tier-1 ties
     const arr = handToArr34(hand);
     arr[r.tileIdx]--;
     const sh = r.shanten;
     let ev = 0;
+    
     for (let y = 0; y < 34; y++) {
-      if (arr[y] >= 4) continue;
+      const originalUnseenY = unseen[y];
+      // 如果这种牌在场上已经没有了，或者手里已经有4张，直接跳过
+      if (arr[y] >= 4 || originalUnseenY <= 0) continue; 
+      
+      // 【修复 Bug 1】：严格遵循物理现实，摸牌必须从牌山中扣除
       arr[y]++;
-      if (calculateShantenWithMelds(arr, meldsCount) < sh) {
-        // y is an effective draw — evaluate next state
-        const prob = unseen[y] / totalUnseen;
-        const { total: ukNew } = _calcUkeire(arr, unseen, meldsCount);
-        ev += prob * ukNew;
+      unseen[y]--; 
+
+      const newSh = calculateShantenWithMelds(arr, meldsCount);
+      if (newSh < sh) {
+        // y 是一张有效进张
+        const prob = originalUnseenY / totalUnseen; // 概率使用摸牌前的真实张数
+        
+        // 【修复 Bug 2】：现在手牌是 14 张，必须寻找一张最优弃牌，以此计算真实的下一步进张数
+        let maxUkNew = 0;
+        for (let d = 0; d < 34; d++) {
+          if (arr[d] <= 0) continue;
+          arr[d]--; // 尝试打出 d
+          
+          // 只有打出 d 后不破坏刚取得的向听数进步，这个路线才成立
+          if (calculateShantenWithMelds(arr, meldsCount) === newSh) {
+            const { total: ukNew } = _calcUkeire(arr, unseen, meldsCount);
+            if (ukNew > maxUkNew) maxUkNew = ukNew;
+          }
+          arr[d]++; // 恢复打出的牌
+        }
+        
+        ev += prob * maxUkNew;
       }
+      
+      // 恢复状态，准备模拟下一种摸牌
+      unseen[y]++;
       arr[y]--;
     }
     r.ev = ev;
@@ -212,20 +236,40 @@ function _bestDiscardArr(arr, unseen, meldsCount) {
     return pool[0];
   }
 
-  // Tier 2
+// Tier 2
   const totalUnseen = unseen.reduce((a, b) => a + b, 0) || 1;
   for (const c of pool) {
     arr[c.discardIdx]--;
     const sh = c.shanten;
     let ev = 0;
+    
     for (let y = 0; y < 34; y++) {
-      if (arr[y] >= 4) continue;
+      const originalUnseenY = unseen[y];
+      if (arr[y] >= 4 || originalUnseenY <= 0) continue;
+      
+      // 【Bug 1 修复】
       arr[y]++;
-      if (calculateShantenWithMelds(arr, meldsCount) < sh) {
-        const prob = unseen[y] / totalUnseen;
-        const { total: ukNew } = _calcUkeire(arr, unseen, meldsCount);
-        ev += prob * ukNew;
+      unseen[y]--; 
+
+      const newSh = calculateShantenWithMelds(arr, meldsCount);
+      if (newSh < sh) {
+        const prob = originalUnseenY / totalUnseen;
+        
+        // 【Bug 2 修复】
+        let maxUkNew = 0;
+        for (let d = 0; d < 34; d++) {
+          if (arr[d] <= 0) continue;
+          arr[d]--;
+          if (calculateShantenWithMelds(arr, meldsCount) === newSh) {
+            const { total: ukNew } = _calcUkeire(arr, unseen, meldsCount);
+            if (ukNew > maxUkNew) maxUkNew = ukNew;
+          }
+          arr[d]++;
+        }
+        ev += prob * maxUkNew;
       }
+      
+      unseen[y]++;
       arr[y]--;
     }
     c.ev = ev;
@@ -277,13 +321,32 @@ function evaluateCallDetailed(game, playerIdx, offeredTile, callType, chiOption)
   const totalUnseen = unseen.reduce((a, b) => a + b, 0) || 1;
   let evPass = 0;
   for (let y = 0; y < 34; y++) {
-    if (arrPass[y] >= 4) continue;
+    const originalUnseenY = unseen[y];
+    if (arrPass[y] >= 4 || originalUnseenY <= 0) continue;
+    
+    // 【Bug 1 修复】
     arrPass[y]++;
-    if (calculateShantenWithMelds(arrPass, meldsBefore) < shBefore) {
-      const prob = unseen[y] / totalUnseen;
-      const { total: ukNew } = _calcUkeire(arrPass, unseen, meldsBefore);
-      evPass += prob * ukNew;
+    unseen[y]--; 
+
+    const newSh = calculateShantenWithMelds(arrPass, meldsBefore);
+    if (newSh < shBefore) {
+      const prob = originalUnseenY / totalUnseen;
+      
+      // 【Bug 2 修复】
+      let maxUkNew = 0;
+      for (let d = 0; d < 34; d++) {
+        if (arrPass[d] <= 0) continue;
+        arrPass[d]--;
+        if (calculateShantenWithMelds(arrPass, meldsBefore) === newSh) {
+           const { total: ukNew } = _calcUkeire(arrPass, unseen, meldsBefore);
+           if (ukNew > maxUkNew) maxUkNew = ukNew;
+        }
+        arrPass[d]++;
+      }
+      evPass += prob * maxUkNew;
     }
+    
+    unseen[y]++;
     arrPass[y]--;
   }
 
